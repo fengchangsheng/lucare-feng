@@ -5,6 +5,8 @@ package com.fcs.demo.thread;
  */
 public class ThreadLocalTest {
 
+    private  int num = 0;
+
     private static ThreadLocal<Integer> seqNum = new ThreadLocal<Integer>() {
         public Integer initialValue() {
             return 0;
@@ -15,6 +17,11 @@ public class ThreadLocalTest {
     public int getNextNum() {
         seqNum.set(seqNum.get() + 1);
         return seqNum.get();
+    }
+
+    public int getNextNums() {
+        num ++;
+        return num;
     }
 
     public static void main(String[] args) {
@@ -31,15 +38,20 @@ public class ThreadLocalTest {
 
     private static class TestClient extends Thread{
         private ThreadLocalTest localTest;
+        private int num;
 
         public TestClient(ThreadLocalTest localTest){
             this.localTest = localTest;
         }
 
+        public TestClient(int num){
+            this.num = num;
+        }
+
         public void run(){
             for (int i = 0; i < 3; i++){
                 System.out.println("thread[" + Thread.currentThread().getName() + "] --> localTest ["
-                + localTest.getNextNum() + "]");
+                + localTest.getNextNums() + "]");
             }
         }
     }
