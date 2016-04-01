@@ -10,5 +10,8 @@ public class Apple {
     @FruitColor(fruitColor = FruitColor.Color.BLUE)
     private String appleColor;
 
+    @MyTag(name = "hah",age = 22)
+    public static void m(){
 
+    }
 }
