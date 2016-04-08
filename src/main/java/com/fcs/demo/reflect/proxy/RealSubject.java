@@ -7,5 +7,6 @@ public class RealSubject implements Subject {
     @Override
     public void doSomething() {
         System.out.println("call do something()");
+        System.out.println(1/0);
     }
 }

@@ -1,4 +1,4 @@
-package com.fcs.demo.collection.concurrentHashMap;
+package com.fcs.demo.collection.hashMap;
 
 import java.util.Map;
 

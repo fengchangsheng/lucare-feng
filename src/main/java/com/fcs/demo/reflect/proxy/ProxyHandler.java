@@ -23,10 +23,15 @@ public class ProxyHandler implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.out.println("前置增强");
-        Object object = method.invoke(proxied,args);
-        System.out.println("后置增强");
-        return object;
+        try {
+            System.out.println("前置增强");
+            Object object = method.invoke(proxied,args);
+            System.out.println("后置增强");
+            return object;
+        } catch (Exception e) {
+            System.out.println("事物回滚");
+            return null;
+        }
     }
 
     public static void main(String[] args) {

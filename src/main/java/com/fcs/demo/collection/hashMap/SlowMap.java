@@ -1,4 +1,4 @@
-package com.fcs.demo.collection.concurrentHashMap;
+package com.fcs.demo.collection.hashMap;
 
 import java.util.*;
 
@@ -29,7 +29,6 @@ public class SlowMap<K, V> extends AbstractMap<K, V> {
     }
 
     @Override
-
     public Set<Entry<K, V>> entrySet() {
         Set<Map.Entry<K, V>> set = new HashSet<Map.Entry<K, V>>();
         Iterator<K> ki = keys.iterator();
