@@ -38,13 +38,43 @@ public class SimpleHashMap<K,V> extends AbstractMap<K,V> {
         return oldValue;
     }
 
-//    public V get(K k) {
-//
-//    }
-
-
     @Override
     public Set<Entry<K, V>> entrySet() {
+        Set<Entry<K, V>> set = new HashSet<Entry<K, V>>();
+        for (LinkedList<MapEntry<K,V>> linkedList:buckets){
+//            if (linkedList != null){
+                for (MapEntry<K, V> mapEntry : linkedList) {
+                    set.add(mapEntry);
+                }
+//            }
+        }
+        return set;
+    }
+
+    public V get(Object key) {
+        int index = Math.abs(key.hashCode()) % size;
+        if (buckets[index] == null) {
+            throw new NoSuchElementException();
+        }else {
+            LinkedList<MapEntry<K, V>> bucket = buckets[index];
+            ListIterator<MapEntry<K, V>> iterator = bucket.listIterator();
+            while (iterator.hasNext()) {
+                MapEntry<K,V> pair = iterator.next();
+                if (pair.getKey().equals(key)) {
+                    return pair.getValue();
+                }
+            }
+        }
         return null;
+    }
+
+    public static void main(String[] args) {
+        SimpleHashMap<String,Integer> simpleHashMap = new SimpleHashMap<String, Integer>();
+        simpleHashMap.put("fcs", 0);
+        simpleHashMap.put("fcs1", 1);
+//        simpleHashMap.put("fcs2", 2);
+//        simpleHashMap.put("fcs3", 3);
+        System.out.println(simpleHashMap);
+
     }
 }
