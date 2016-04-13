@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class SimpleHashMap<K,V> extends AbstractMap<K,V> {
 
-    private int size = 17;
+    private int size = 16;
     private LinkedList<MapEntry<K,V>>[] buckets = new LinkedList[size];
 
     SimpleHashMap(){
@@ -39,17 +39,6 @@ public class SimpleHashMap<K,V> extends AbstractMap<K,V> {
     }
 
     public V get(Object key) {
-//        Iterator<Entry<K, V>> iterator = entrySet().iterator();
-//        while (iterator.hasNext()) {
-//            Entry<K, V>  entry = iterator.next();
-//            if (entry.getKey() == key) {
-//                return entry.getValue();
-//            }
-//        }
-//        return null;
-        /**
-         * 上面的写法可以根据key拿到value  但是建立在遍历所有的基础之上
-         */
         int index = Math.abs(key.hashCode()) % size;
         LinkedList<MapEntry<K, V>> bucket = buckets[index];
         if (bucket == null) {
