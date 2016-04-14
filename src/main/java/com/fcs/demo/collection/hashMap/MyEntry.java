@@ -12,6 +12,7 @@ public class MyEntry<K, V> implements Map.Entry<K, V> {
     private K key;
     private V value;
     private MyEntry<K, V> next;
+    private int size;
 
     public MyEntry(K key, V value) {
         this.key = key;
@@ -36,6 +37,22 @@ public class MyEntry<K, V> implements Map.Entry<K, V> {
         V result = value;
         value = v;
         return result;
+    }
+
+    public MyEntry<K, V> getNext() {
+        return next;
+    }
+
+    public void setNext(MyEntry<K, V> next) {
+        this.next = next;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
     }
 
     public int hashCode() {
