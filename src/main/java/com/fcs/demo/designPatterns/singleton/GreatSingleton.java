@@ -8,6 +8,14 @@ package com.fcs.demo.designPatterns.singleton;
  */
 public class GreatSingleton {
 
+    {
+        System.out.println("init");
+    }
+
+    static {
+        System.out.println("static init");
+    }
+
     private GreatSingleton() {
         System.out.println("StaticSingleton is create");
     }
@@ -20,11 +28,14 @@ public class GreatSingleton {
         return GreateHolder.greatSingleton;
     }
 
-
     private static class GreateHolder{
 
         private static GreatSingleton greatSingleton = new GreatSingleton();
 
+    }
+
+    public static void main(String[] args) {
+        GreatSingleton.otherMethod();
     }
 
 }
