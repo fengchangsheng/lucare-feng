@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<remoting>
+	<service name="AuthService">
+		<locator>127.0.0.1</locator>
+		<port>49801</port>
+	</service>
+</remoting>
