@@ -22,13 +22,13 @@ public class GenerateEntityUtil {
     private boolean f_sql = false; // 是否需要导入包java.sql.*
 
     //数据库连接
-    private static final String URL = "jdbc:mysql://localhost:3306/wechatplat";
+    private static final String URL = "jdbc:mysql://112.74.217.22:3306/train2";
     private static final String NAME = "root";
     private static final String PASS = "root";
     private static final String DRIVER = "com.mysql.jdbc.Driver";
 
     GenerateEntityUtil() {
-        tablenames = new String[]{"user","role"};
+        tablenames = new String[]{"t_proj_member"};
         for (String tableName : tablenames) {
             generate(tableName);
         }
