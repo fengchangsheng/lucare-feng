@@ -1,6 +1,7 @@
 package com.fcs.demo.rpc.my;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.lang.reflect.InvocationHandler;
@@ -9,11 +10,40 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Lucare.Feng on 2016/7/11.
  */
 public class MyRpcFramework {
+
+    private static Map<String,Remoting> config;
+
+    public static void start(){
+        InputStream inputStream = null;
+        inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(XMlReader.filename);
+        if(inputStream == null) {
+            throw new IllegalArgumentException("xml file not found in classpath: " + XMlReader.filename);
+        }
+        config  = XMlReader.loadconfig(inputStream);
+        try {
+            for (String key : config.keySet()) {
+                Remoting remoting = config.get(key);
+                Object object = Class.forName(remoting.clasz).newInstance();
+                export(object,Integer.parseInt(remoting.port));
+            }
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public static void export(final Object service, int port) throws Exception{
         if (service == null) {

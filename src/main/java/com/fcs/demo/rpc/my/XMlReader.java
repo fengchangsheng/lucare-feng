@@ -3,9 +3,10 @@ package com.fcs.demo.rpc.my;
 import org.dom4j.Document;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
-
-import java.io.File;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by Lucare.Feng on 2016/7/11.
@@ -13,8 +14,9 @@ import java.util.Iterator;
 public class XMlReader {
 
     // 配置文件名
-    private static String filename = "fs-remoting.xml";
-    private static Remoting config;
+    public static String filename = "fs-remoting.xml";
+    private static Map<String,Remoting> configs;
+
 
     /**
      * 从配置文件中读取参数并保存到Config类中,
@@ -24,40 +26,39 @@ public class XMlReader {
      *
      * @return
      */
-    public static Remoting loadconfig() {
-        if (config == null)
-            config = getconfig();
-        return config;
+    public static Map<String,Remoting> loadconfig(InputStream inputStream) {
+        if (configs == null)
+            configs = getconfig(inputStream);
+        return configs;
     }
 
-    private static Remoting getconfig() {
-        Remoting config = new Remoting();
+    private static Map<String,Remoting> getconfig(InputStream inputStream) {
         try {
-            File f = new File(filename);
-            if (!f.exists()) {
-                System.out.println("  Error : Config file doesn't exist!");
-                System.exit(1);
-            }
+            Map<String, Remoting> map = new HashMap<String, Remoting>();
+            Remoting config = null;
             SAXReader reader = new SAXReader();
             Document doc;
-            doc = reader.read(f);
+            doc = reader.read(inputStream);
             Element root = doc.getRootElement();
             Element data;
             Iterator<?> itr = root.elementIterator("service");
             while (itr.hasNext()) {
+                config = new Remoting();
                 data = (Element) itr.next();
                 config.locator = data.elementText("locator").trim();
                 config.port = data.elementText("port").trim();
+                config.api = data.elementText("api").trim();
+                config.clasz = data.elementText("class").trim();
+//                String api = data.attribute("name").getText();
+                map.put(config.api,config);
             }
+            return map;
 
         } catch (Exception ex) {
             System.out.println("Error : " + ex.toString());
         }
-        return config;
+        return null;
 
     }
 
-    public static void main(String[] args) {
-        loadconfig();
-    }
 }
