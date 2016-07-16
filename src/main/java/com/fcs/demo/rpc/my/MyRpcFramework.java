@@ -29,9 +29,19 @@ public class MyRpcFramework {
         config  = XMlReader.loadconfig(inputStream);
         try {
             for (String key : config.keySet()) {
-                Remoting remoting = config.get(key);
-                Object object = Class.forName(remoting.clasz).newInstance();
-                export(object,Integer.parseInt(remoting.port));
+                final Remoting remoting = config.get(key);
+                final Object object = Class.forName(remoting.clasz).newInstance();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            export(object,Integer.parseInt(remoting.port));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }).start();
+
             }
         } catch (InstantiationException e) {
             e.printStackTrace();
@@ -88,34 +98,34 @@ public class MyRpcFramework {
         }
     }
 
-    public static <T> T refer(final Class<T> interfaceClass, final String host, final int port) throws Exception{
-        if (interfaceClass == null) {
-            throw new IllegalArgumentException("Interface class == null");
-        }
-        if (!interfaceClass.isInterface()) {
-            throw new IllegalArgumentException("The "+interfaceClass.getName()+" must be interface class!");
-        }
-        if (host == null || host.length() == 0) {
-            throw new IllegalArgumentException("Host == null");
-        }
-        if (port <= 0 || port > 65535) {
-            throw new IllegalArgumentException("Invalid port "+port);
-        }
-        System.out.println("Get remote service " + interfaceClass.getName() + " from server " + host + ":" + port);
-        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                Socket socket = new Socket(host,port);
-                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                outputStream.writeUTF(method.getName());
-                outputStream.writeObject(method.getParameterTypes());
-                outputStream.writeObject(args);
-                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
-                Object result = inputStream.readObject();
-                if (result instanceof Throwable)
-                    throw (Throwable) result;
-                return result;
-            }
-        });
-    }
+//    public static <T> T refer(final Class<T> interfaceClass, final String host, final int port) throws Exception{
+//        if (interfaceClass == null) {
+//            throw new IllegalArgumentException("Interface class == null");
+//        }
+//        if (!interfaceClass.isInterface()) {
+//            throw new IllegalArgumentException("The "+interfaceClass.getName()+" must be interface class!");
+//        }
+//        if (host == null || host.length() == 0) {
+//            throw new IllegalArgumentException("Host == null");
+//        }
+//        if (port <= 0 || port > 65535) {
+//            throw new IllegalArgumentException("Invalid port "+port);
+//        }
+//        System.out.println("Get remote service " + interfaceClass.getName() + " from server " + host + ":" + port);
+//        return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class<?>[]{interfaceClass}, new InvocationHandler() {
+//            @Override
+//            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+//                Socket socket = new Socket(host,port);
+//                ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+//                outputStream.writeUTF(method.getName());
+//                outputStream.writeObject(method.getParameterTypes());
+//                outputStream.writeObject(args);
+//                ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+//                Object result = inputStream.readObject();
+//                if (result instanceof Throwable)
+//                    throw (Throwable) result;
+//                return result;
+//            }
+//        });
+//    }
 }

@@ -7,5 +7,6 @@ public class MyRpcConsumer {
 
     public static void main(String[] args) {
         MyServiceFactory.getService(com.fcs.demo.rpc.my.TwoService.class).sayTwo();
+        MyServiceFactory.getService(com.fcs.demo.rpc.my.OneService.class).sayOne();
     }
 }
