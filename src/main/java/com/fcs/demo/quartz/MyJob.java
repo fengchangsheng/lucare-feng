@@ -1,12 +1,11 @@
 package com.fcs.demo.quartz;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.SchedulerException;
+import org.quartz.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import static javafx.scene.input.KeyCode.J;
 
 /**
  * Created by Lucare.Feng on 2016/10/19.
@@ -22,7 +21,7 @@ public class MyJob implements Job{
         String jobRunTime = dateFormat.format(Calendar.getInstance().getTime());
 
         // 输出任务执行情况
-        System.out.println("任务 : " + jobName + " 在  " +jobRunTime + " 执行了 ");
+        System.out.println("任务 : " + jobName + " 在  " +jobRunTime + " 执行了 触发器为"+ jobExecutionContext.getTrigger().getKey().getName());
 
 //        try {
 //        QuartzManager.getInstanceScheduler().deleteJob(jobExecutionContext.getJobDetail().getKey());
