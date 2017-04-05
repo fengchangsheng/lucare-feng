@@ -1,5 +1,6 @@
 package com.fcs.demo.guava;
 
+
 import com.google.common.base.Strings;
 
 /**
@@ -10,6 +11,6 @@ public class Test {
     public static void main(String[] args) {
         String name = "";
         boolean isNull = Strings.isNullOrEmpty(name);
-        System.out.println(isNull);
+//        System.out.println(isNull);
     }
 }
