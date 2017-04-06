@@ -10,8 +10,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * Created by Lucare.Feng on 2017/4/5.
- * http://gee.cs.oswego.edu/dl/cpjslides/nio.pdf
+ * Created by Lucare.Feng on 2017/4/6.
  */
 public class Reactor implements Runnable {
 
@@ -33,9 +32,9 @@ public class Reactor implements Runnable {
             try {
                 selector.select();
                 Set selected = selector.selectedKeys();
-                Iterator it = selected.iterator();
+                Iterator<SelectionKey> it = selected.iterator();
                 while (it.hasNext()) {
-                    dispatch((SelectionKey)it.next());
+                    dispatch(it.next());
                 }
                 selected.clear();
             } catch (IOException e) {
@@ -65,4 +64,6 @@ public class Reactor implements Runnable {
             }
         }
     }
+
+
 }
