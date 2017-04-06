@@ -30,19 +30,46 @@ public class MyHandler implements Runnable {
 
     @Override
     public void run() {
-        if (state == READING){
-            read();
-        }else if (state == SENDING) {
-            send();
+        try {
+            if (state == READING){
+                read();
+            }else if (state == SENDING) {
+                send();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
-    void read(){
-
+    void read() throws IOException {
+        socket.read(input);
+        if (inputIsComplete()) {
+            process();
+            state = SENDING;
+            sk.interestOps(SelectionKey.OP_WRITE);
+        }
     }
 
-    void send(){
-
+    void send() throws IOException {
+        socket.write(output);
+        if (outputIsComplete()) {
+            sk.cancel();
+        }
     }
+
+    boolean inputIsComplete(){
+        //....
+        return true;
+    }
+
+    boolean outputIsComplete(){
+        //....
+        return true;
+    }
+
+    private void process() {
+        //do something..
+    }
+
 
 }
